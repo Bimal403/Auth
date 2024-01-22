@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const router = require("../router/");
 const { MulterError } = require("multer");
+const { ZodError } = require("zod");
 
 //body parser
 app.use(express.json());
@@ -39,6 +40,16 @@ app.use((error, req, res, next) => {
       code = 400;
       message = error.message;
     }
+  }
+
+  if (error instanceof ZodError) {
+    code = 400;
+    let msg = {};
+    error.errors.map((err) => {
+      msg[err.path[0]] = err.message;
+    });
+    message = "Validation Failure";
+    result = msg;
   }
   res.status(code).json({
     result: result,

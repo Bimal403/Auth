@@ -1,4 +1,5 @@
 const { z } = require("zod");
+const { generateRandomString } = require("../../config/helpers");
 
 class AuthController {
   register = (req, res, next) => {
@@ -20,8 +21,11 @@ class AuthController {
       } else if (req.files) {
         payload.image = req.files((item) => item.filename);
       }
+      //todo:db store
+      payload.status = "inactive";
+      payload.token = generateRandomString();
       res.json({
-        result: validatedData,
+        result: payload,
       });
     } catch (exception) {
       // next({ code: 400, message: "Validation failure" });
