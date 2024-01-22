@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const router = require("../router/");
+const multer = require("multer");
 
 //body parser
 app.use(express.json());
@@ -13,6 +14,7 @@ app.use(
 app.use("/health", (req, res, next) => {
   res.send("Success ok");
 });
+
 app.use("/api/v1", router);
 
 //404 handle
